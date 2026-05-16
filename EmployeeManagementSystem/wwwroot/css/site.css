@@ -1,0 +1,87 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f8;
+    color: #1f2937;
+    min-height: 100vh;
+}
+
+.app-container {
+    width: 90%;
+    max-width: 1100px;
+    margin: 40px auto 60px auto;
+    padding-top: 20px;
+}
+
+.hero {
+    background-color: #1e3a8a;
+    color: white;
+    padding: 32px;
+    border-radius: 16px;
+    margin-bottom: 24px;
+}
+
+.eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 14px;
+    color: #bfdbfe;
+}
+
+.card {
+    background-color: white;
+    padding: 24px;
+    border-radius: 16px;
+    margin-bottom: 24px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+}
+
+.button-row {
+    margin-top: 20px;
+}
+
+button {
+    background-color: #1e3a8a;
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+button.secondary {
+    background-color: #e5e7eb;
+    color: #1f2937;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+}
+
+th {
+    background-color: #eff6ff;
+    text-align: left;
+}
+
+th, td {
+    padding: 14px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+html {
+    min-height: 100%;
+}
+
+.app-footer {
+    width: 100%;
+    padding: 24px 0;
+    text-align: center;
+    background-color: white;
+    margin-top: 40px;
+    position: static;
+    border-top: 1px solid #e5e7eb;
+}

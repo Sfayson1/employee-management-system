@@ -1,0 +1,70 @@
+﻿@page
+@model IndexModel
+
+<div class="app-container">
+
+    <header class="hero">
+        <p class="eyebrow">Week 1 Project Demo</p>
+        <h1>Employee Management System</h1>
+        <p>Sherika Fayson</p>
+    </header>
+
+    <section class="card">
+        <h2>Welcome</h2>
+
+        <p>
+            Welcome to the Employee Management System.
+            This application will allow users to manage employee records.
+        </p>
+
+        <p>
+            This Week 1 project demonstrates inheritance and composition
+            using employee classes.
+        </p>
+
+        <div class="button-row">
+            <button>View Employees</button>
+            <button class="secondary">Add Employee</button>
+            <button class="secondary">Update Employee</button>
+            <button class="secondary">Remove Employee</button>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>Employee Directory</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Job Title</th>
+                    <th>Department</th>
+                    <th>Pay</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var employee in Model.Employees)
+                {
+                    <tr>
+                        <td>@employee.EmployeeId</td>
+                        <td>@employee.FirstName @employee.LastName</td>
+                        <td>@employee.GetEmployeeType()</td>
+                        <td>@employee.JobTitle</td>
+                        <td>@employee.Department</td>
+                        <td>@employee.GetPayInformation()</td>
+                        <td>@employee.Email</td>
+                        <td>@employee.Phone</td>
+                        <td>@employee.EmployeeAddress.GetFullAddress()</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </section>
+
+</div>
