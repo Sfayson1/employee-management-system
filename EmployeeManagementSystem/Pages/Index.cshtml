@@ -20,92 +20,96 @@
         </p>
         <p>Use the sections below to explore:</p>
         <ul class="instruction-list">
-            <li><strong>Payroll Processing</strong> &mdash; a live demonstration of polymorphism: the same <code>CalculatePay()</code> call produces different results for each employee type</li>
-            <li><strong>Employee Directory</strong> &mdash; the full roster from Week 1, now extended to six employees across three pay types</li>
-        </ul>
-    </section>
+            <li><strong>Payroll Processing</strong> &mdash; a live demonstration of polymorphism: the same
+                <code>CalculatePay()</code> call produces different results for each employee type</li>
+                <li><strong>Employee Directory</strong> &mdash; the full roster from Week 1, now extended to six employees
+                    across three pay types</li>
+                </ul>
+            </section>
 
-@* ── Payroll Processing Demo ─────────────────────────────────────────── *@
-    <section class="card">
-        <h2>Payroll Processing <span class="poly-tag">Polymorphism Demo</span></h2>
-        <p class="section-note">
-            This table was produced by <code>PayrollProcessor.ProcessPayroll(@Model.HoursThisPeriod hrs)</code>.
-            Each pay amount was computed by calling <code>CalculatePay()</code> through an
-            <code>IPayable</code> interface reference. The processor used the <em>same call</em> for all
-            six employees &mdash; each concrete type returned a completely different result.
-        </p>
+            @* ── Payroll Processing Demo ─────────────────────────────────────────── *@
+            <section class="card">
+                <h2>Payroll Processing <span class="poly-tag">Polymorphism Demo</span></h2>
+                <p class="section-note">
+                    This table was produced by <code>PayrollProcessor.ProcessPayroll(@Model.HoursThisPeriod hrs)</code>.
+                    Each pay amount was computed by calling <code>CalculatePay()</code> through an
+                    <code>IPayable</code> interface reference. The processor used the <em>same call</em> for all
+                    six employees &mdash; each concrete type returned a completely different result.
+                </p>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Pay Structure</th>
-                    <th>Period Pay (@Model.HoursThisPeriod hrs)</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var result in Model.PayrollResults)
-                {
-                    <tr>
-                        <td>@result.EmployeeId</td>
-                        <td>@result.EmployeeName</td>
-                        <td>
-                            <span class="badge badge-@result.EmployeeType.ToLower()">@result.EmployeeType</span>
-                        </td>
-                        <td class="pay-summary">@result.PaySummary</td>
-                        <td class="pay-amount">@result.PayAmount.ToString("C")</td>
-                    </tr>
-                }
-            </tbody>
-            <tfoot>
-                <tr class="total-row">
-                    <td colspan="4"><strong>Total Gross Payroll This Period</strong></td>
-                    <td class="pay-amount"><strong>@Model.TotalPayroll.ToString("C")</strong></td>
-                </tr>
-            </tfoot>
-        </table>
-    </section>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Pay Structure</th>
+                            <th>Period Pay (@Model.HoursThisPeriod hrs)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var result in Model.PayrollResults)
+                        {
+                            <tr>
+                                <td>@result.EmployeeId</td>
+                                <td>@result.EmployeeName</td>
+                                <td>
+                                    <span class="badge badge-@result.EmployeeType.ToLower()">@result.EmployeeType</span>
+                                </td>
+                                <td class="pay-summary">@result.PaySummary</td>
+                                <td class="pay-amount">@result.PayAmount.ToString("C")</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr class="total-row">
+                            <td colspan="4"><strong>Total Gross Payroll This Period</strong></td>
+                            <td class="pay-amount"><strong>@Model.TotalPayroll.ToString("C")</strong></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </section>
 
-    @* ── Employee Directory (Week 1) ───────────────────────────────────── *@
-    <section class="card">
-        <h2>Employee Directory</h2>
-        <p class="section-note">Full employee roster &mdash; preserved from Week 1 and extended with additional employees.</p>
+            @* ── Employee Directory (Week 1) ───────────────────────────────────── *@
+            <section class="card">
+                <h2>Employee Directory</h2>
+                <p class="section-note">Full employee roster &mdash; preserved from Week 1 and extended with additional
+                    employees.</p>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Job Title</th>
-                    <th>Department</th>
-                    <th>Pay Rate</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Address</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var employee in Model.Employees)
-                {
-                    <tr>
-                        <td>@employee.EmployeeId</td>
-                        <td>@employee.FirstName @employee.LastName</td>
-                        <td>
-                            <span class="badge badge-@employee.GetEmployeeType().ToLower()">@employee.GetEmployeeType()</span>
-                        </td>
-                        <td>@employee.JobTitle</td>
-                        <td>@employee.Department</td>
-                        <td>@employee.GetPayInformation()</td>
-                        <td>@employee.Email</td>
-                        <td>@employee.Phone</td>
-                        <td>@employee.EmployeeAddress.GetFullAddress()</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </section>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Job Title</th>
+                                <th>Department</th>
+                                <th>Pay Rate</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Address</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var employee in Model.Employees)
+                            {
+                                <tr>
+                                    <td>@employee.EmployeeId</td>
+                                    <td>@employee.FirstName @employee.LastName</td>
+                                    <td>
+                                        <span
+                                        class="badge badge-@employee.GetEmployeeType().ToLower()">@employee.GetEmployeeType()</span>
+                                    </td>
+                                    <td>@employee.JobTitle</td>
+                                    <td>@employee.Department</td>
+                                    <td>@employee.GetPayInformation()</td>
+                                    <td>@employee.Email</td>
+                                    <td>@employee.Phone</td>
+                                    <td>@employee.EmployeeAddress.GetFullAddress()</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </section>
 
-</div>
+            </div>
