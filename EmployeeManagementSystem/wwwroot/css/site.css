@@ -1,3 +1,10 @@
+/* ============================================================
+   Employee Management System — site.css
+   Sherika Fayson | SDC 320
+   Updated: May 24, 2026
+   ============================================================ */
+
+/* ── Base ──────────────────────────────────────────────────── */
 body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -8,34 +15,217 @@ body {
 
 .app-container {
     width: 90%;
-    max-width: 1100px;
+    max-width: 1200px;
     margin: 40px auto 60px auto;
     padding-top: 20px;
 }
 
+/* ── Hero ──────────────────────────────────────────────────── */
 .hero {
-    background-color: #1e3a8a;
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
     color: white;
-    padding: 32px;
+    padding: 36px 32px;
     border-radius: 16px;
     margin-bottom: 24px;
 }
 
 .eyebrow {
     text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: 14px;
+    letter-spacing: 1.5px;
+    font-size: 13px;
     color: #bfdbfe;
+    margin: 0 0 8px 0;
 }
 
+.hero h1 {
+    margin: 0 0 8px 0;
+    font-size: 2rem;
+}
+
+.hero-name {
+    margin: 0;
+    color: #dbeafe;
+    font-size: 15px;
+}
+
+/* ── Card ──────────────────────────────────────────────────── */
 .card {
     background-color: white;
-    padding: 24px;
+    padding: 28px 32px;
     border-radius: 16px;
     margin-bottom: 24px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
 }
 
+.card h2 {
+    margin-top: 0;
+    color: #1e3a8a;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.section-note {
+    color: #6b7280;
+    font-size: 14px;
+    margin-bottom: 20px;
+    border-left: 3px solid #bfdbfe;
+    padding-left: 12px;
+}
+
+/* ── Instruction list ──────────────────────────────────────── */
+.instruction-list {
+    padding-left: 20px;
+    line-height: 1.9;
+}
+
+/* ── OO Design grid ────────────────────────────────────────── */
+.oo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.oo-box {
+    border-radius: 12px;
+    padding: 18px 20px;
+    position: relative;
+}
+
+.oo-box-label {
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 6px;
+}
+
+.oo-interface   { background-color: #eff6ff; border: 1.5px solid #bfdbfe; }
+.oo-inheritance { background-color: #f0fdf4; border: 1.5px solid #bbf7d0; }
+.oo-composition { background-color: #fefce8; border: 1.5px solid #fde68a; }
+.oo-polymorphism{ background-color: #fdf4ff; border: 1.5px solid #e9d5ff; }
+
+.oo-interface   .oo-box-label { background-color: #bfdbfe; color: #1e40af; }
+.oo-inheritance .oo-box-label { background-color: #bbf7d0; color: #166534; }
+.oo-composition .oo-box-label { background-color: #fde68a; color: #92400e; }
+.oo-polymorphism .oo-box-label{ background-color: #e9d5ff; color: #6b21a8; }
+
+.oo-name {
+    font-weight: bold;
+    font-size: 15px;
+    margin: 8px 0 6px 0;
+}
+
+.oo-desc {
+    font-size: 13.5px;
+    color: #374151;
+    line-height: 1.6;
+    margin: 0 0 8px 0;
+}
+
+.oo-why {
+    font-size: 13px;
+    color: #4b5563;
+    background-color: rgba(255,255,255,0.6);
+    padding: 8px 10px;
+    border-radius: 8px;
+    margin-top: 8px;
+    line-height: 1.5;
+}
+
+.oo-implementors {
+    font-size: 13px;
+    margin-top: 10px;
+    color: #374151;
+}
+
+.oo-box ul {
+    margin: 6px 0 8px 0;
+    padding-left: 18px;
+    font-size: 13.5px;
+    line-height: 1.8;
+}
+
+/* ── Badges ────────────────────────────────────────────────── */
+.badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.badge-hourly      { background-color: #dbeafe; color: #1d4ed8; }
+.badge-salaried    { background-color: #dcfce7; color: #15803d; }
+.badge-commission  { background-color: #fae8ff; color: #7e22ce; }
+
+/* ── Polymorphism tag ──────────────────────────────────────── */
+.poly-tag {
+    font-size: 13px;
+    font-weight: normal;
+    background-color: #fae8ff;
+    color: #7e22ce;
+    padding: 3px 10px;
+    border-radius: 20px;
+    vertical-align: middle;
+}
+
+/* ── Tables ────────────────────────────────────────────────── */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+    font-size: 14px;
+}
+
+th {
+    background-color: #eff6ff;
+    text-align: left;
+    color: #1e3a8a;
+}
+
+th, td {
+    padding: 13px 14px;
+    border-bottom: 1px solid #e5e7eb;
+    vertical-align: middle;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+tr:hover td {
+    background-color: #f9fafb;
+}
+
+.pay-summary {
+    font-size: 13px;
+    color: #6b7280;
+}
+
+.pay-amount {
+    font-weight: bold;
+    color: #1e3a8a;
+    white-space: nowrap;
+}
+
+.total-row td {
+    background-color: #eff6ff;
+    border-top: 2px solid #bfdbfe;
+}
+
+.total-row .pay-amount {
+    font-size: 15px;
+    color: #1e3a8a;
+}
+
+/* ── Buttons ───────────────────────────────────────────────── */
 .button-row {
     margin-top: 20px;
 }
@@ -49,6 +239,7 @@ button {
     margin-right: 10px;
     margin-bottom: 10px;
     cursor: pointer;
+    font-size: 14px;
 }
 
 button.secondary {
@@ -56,22 +247,16 @@ button.secondary {
     color: #1f2937;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 16px;
+/* ── Code snippets ─────────────────────────────────────────── */
+code {
+    background-color: #f3f4f6;
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #1e40af;
 }
 
-th {
-    background-color: #eff6ff;
-    text-align: left;
-}
-
-th, td {
-    padding: 14px;
-    border-bottom: 1px solid #e5e7eb;
-}
-
+/* ── Footer ────────────────────────────────────────────────── */
 html {
     min-height: 100%;
 }
@@ -82,6 +267,7 @@ html {
     text-align: center;
     background-color: white;
     margin-top: 40px;
-    position: static;
     border-top: 1px solid #e5e7eb;
+    color: #6b7280;
+    font-size: 13px;
 }
