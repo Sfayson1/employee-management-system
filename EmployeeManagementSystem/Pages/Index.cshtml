@@ -5,111 +5,257 @@
 
     @* ── Hero Header ──────────────────────────────────────────────────── *@
     <header class="hero">
-        <p class="eyebrow">Week 2 Project Demo &mdash; Interfaces &amp; Polymorphism</p>
+        <p class="eyebrow">Week 3 Project Demo &mdash; Abstraction, Constructors &amp; Access Specifiers</p>
         <h1>Employee Management System</h1>
         <p class="hero-name">Sherika Fayson &nbsp;|&nbsp; SDC 320</p>
     </header>
 
     @* ── Welcome / Instructions ───────────────────────────────────────── *@
     <section class="card">
-        <h2>Welcome</h2>
+        <h2>Welcome &mdash; Phase 3</h2>
         <p>
-            Welcome to the <strong>Employee Management System</strong> &mdash; Phase 2.
-            This application manages employee records and demonstrates key
-            object-oriented programming concepts in C#.
+            Welcome to the <strong>Employee Management System</strong> &mdash; Phase 3.
+            This phase extends the Phase 2 application to demonstrate three additional
+            object-oriented programming concepts in C#:
         </p>
-        <p>Use the sections below to explore:</p>
         <ul class="instruction-list">
-            <li><strong>Payroll Processing</strong> &mdash; a live demonstration of polymorphism: the same
-                <code>CalculatePay()</code> call produces different results for each employee type</li>
-                <li><strong>Employee Directory</strong> &mdash; the full roster from Week 1, now extended to six employees
-                    across three pay types</li>
-                </ul>
-            </section>
+            <li>
+                <strong>Abstraction</strong> &mdash;
+                The <code>Employee</code> base class is now <em>abstract</em>, preventing direct
+                instantiation and requiring each subclass to implement <code>GetEmployeeType()</code>,
+                <code>GetPayInformation()</code>, and the new <code>GetDetailedSummary()</code>.
+                A second abstract class, <code>ReportGenerator</code>, demonstrates abstraction outside
+                the employee hierarchy — see the <em>Generated Reports</em> section below.
+            </li>
+            <li>
+                <strong>Constructors</strong> &mdash;
+                Every model class now provides multiple constructors: <code>Address</code> has a
+                default, parameterized, and copy constructor; each employee type has a full
+                parameterized constructor and a simplified 4-parameter constructor (using
+                constructor chaining via <code>:this()</code>); <code>PayrollResult</code> has a
+                static constructor (sets <code>TaxYear</code>) and a parameterized constructor.
+                See the <em>New Hire Intake Queue</em> section for a live demo of simplified constructors.
+            </li>
+            <li>
+                <strong>Access Specifiers</strong> &mdash;
+                All model properties have been reviewed: identity fields use <code>private set</code>
+                (cannot change after construction), mutable role/contact fields use
+                <code>protected set</code> (only the class hierarchy may update them),
+                and internal data sources use <code>private readonly</code>.
+                No data is exposed more broadly than necessary.
+            </li>
+        </ul>
+        <p>Scroll down to explore each concept demonstrated live in this application.</p>
+    </section>
 
-            @* ── Payroll Processing Demo ─────────────────────────────────────────── *@
-            <section class="card">
-                <h2>Payroll Processing <span class="poly-tag">Polymorphism Demo</span></h2>
-                <p class="section-note">
-                    This table was produced by <code>PayrollProcessor.ProcessPayroll(@Model.HoursThisPeriod hrs)</code>.
-                    Each pay amount was computed by calling <code>CalculatePay()</code> through an
-                    <code>IPayable</code> interface reference. The processor used the <em>same call</em> for all
-                    six employees &mdash; each concrete type returned a completely different result.
-                </p>
+    @* ── Phase 3 — Abstract Classes Summary ──────────────────────────────── *@
+    <section class="card">
+        <h2>Abstraction <span class="poly-tag">Phase 3 Demo</span></h2>
+        <p class="section-note">
+            Two abstract classes demonstrate how abstraction is applied across the system:
+        </p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Abstract Class</th>
+                    <th>Abstract Method(s)</th>
+                    <th>Concrete Subclasses</th>
+                    <th>Why Abstract?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>Employee</code></td>
+                    <td>
+                        <code>GetEmployeeType()</code><br />
+                        <code>GetPayInformation()</code><br />
+                        <code>GetDetailedSummary()</code>
+                    </td>
+                    <td>
+                        <span class="badge badge-hourly">HourlyEmployee</span><br />
+                        <span class="badge badge-salaried">SalariedEmployee</span><br />
+                        <span class="badge badge-commission">CommissionEmployee</span>
+                    </td>
+                    <td>A &ldquo;generic employee&rdquo; has no real-world meaning.
+                        Every employee has a pay type; the base class cannot define a
+                        meaningful default.</td>
+                </tr>
+                <tr>
+                    <td><code>ReportGenerator</code></td>
+                    <td><code>GenerateReport()</code></td>
+                    <td>
+                        <code>EmployeeDirectoryReport</code><br />
+                        <code>PayrollSummaryReport</code>
+                    </td>
+                    <td>A &ldquo;generic report&rdquo; has no content. Header/footer
+                        logic is shared; only the body differs per report type.</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Type</th>
-                            <th>Pay Structure</th>
-                            <th>Period Pay (@Model.HoursThisPeriod hrs)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var result in Model.PayrollResults)
-                        {
-                            <tr>
-                                <td>@result.EmployeeId</td>
-                                <td>@result.EmployeeName</td>
-                                <td>
-                                    <span class="badge badge-@result.EmployeeType.ToLower()">@result.EmployeeType</span>
-                                </td>
-                                <td class="pay-summary">@result.PaySummary</td>
-                                <td class="pay-amount">@result.PayAmount.ToString("C")</td>
-                            </tr>
-                        }
-                    </tbody>
-                    <tfoot>
-                        <tr class="total-row">
-                            <td colspan="4"><strong>Total Gross Payroll This Period</strong></td>
-                            <td class="pay-amount"><strong>@Model.TotalPayroll.ToString("C")</strong></td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </section>
+    @* ── Phase 3 — Generated Reports ─────────────────────────────────────── *@
+    <section class="card">
+        <h2>Generated Reports <span class="poly-tag">Abstract ReportGenerator Demo</span></h2>
+        <p class="section-note">
+            Both reports below were produced by calling <code>GenerateReport()</code> through an
+            abstract <code>ReportGenerator</code> reference. The page model does not know or
+            care which concrete subclass is used &mdash; only that the object honors the abstract contract.
+            <code>GetDetailedSummary()</code> inside the directory report is also called through
+            abstract <code>Employee</code> references (polymorphism within abstraction).
+        </p>
 
-            @* ── Employee Directory (Week 1) ───────────────────────────────────── *@
-            <section class="card">
-                <h2>Employee Directory</h2>
-                <p class="section-note">Full employee roster &mdash; preserved from Week 1 and extended with additional
-                    employees.</p>
+        <h3>Employee Directory Report</h3>
+        <pre class="report-output">@Model.DirectoryReportText</pre>
 
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Type</th>
-                                <th>Job Title</th>
-                                <th>Department</th>
-                                <th>Pay Rate</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Address</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var employee in Model.Employees)
-                            {
-                                <tr>
-                                    <td>@employee.EmployeeId</td>
-                                    <td>@employee.FirstName @employee.LastName</td>
-                                    <td>
-                                        <span
-                                        class="badge badge-@employee.GetEmployeeType().ToLower()">@employee.GetEmployeeType()</span>
-                                    </td>
-                                    <td>@employee.JobTitle</td>
-                                    <td>@employee.Department</td>
-                                    <td>@employee.GetPayInformation()</td>
-                                    <td>@employee.Email</td>
-                                    <td>@employee.Phone</td>
-                                    <td>@employee.EmployeeAddress.GetFullAddress()</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </section>
+        <h3 style="margin-top:1.5rem;">Payroll Summary Report</h3>
+        <p class="section-note" style="font-size:0.8rem;">
+            Tax Year (set by static constructor on <code>PayrollResult</code>): <strong>@EmployeeManagementSystem.Models.PayrollResult.TaxYear</strong>
+        </p>
+        <pre class="report-output">@Model.PayrollReportText</pre>
+    </section>
 
-            </div>
+    @* ── Phase 3 — Constructor Demo (New Hire Intake) ─────────────────────── *@
+    <section class="card">
+        <h2>New Hire Intake Queue <span class="poly-tag">Multiple Constructors Demo</span></h2>
+        <p class="section-note">
+            These three employees were created using the <strong>simplified 4-parameter constructor</strong>
+            (employee ID, first name, last name, pay rate/salary/commission rate). Department, job title,
+            address, and contact information default to <em>Pending</em> until HR onboarding is complete.
+            Constructor chaining via <code>:this()</code> routes the simplified call through the full
+            parameterized constructor, keeping initialization logic in one place.
+        </p>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Pay Rate</th>
+                    <th>Department</th>
+                    <th>Summary (via abstract GetDetailedSummary)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var emp in Model.NewHires)
+                {
+                    <tr>
+                        <td>@emp.EmployeeId</td>
+                        <td>@emp.FirstName @emp.LastName</td>
+                        <td>
+                            <span class="badge badge-@emp.GetEmployeeType().ToLower()">@emp.GetEmployeeType()</span>
+                        </td>
+                        <td>@emp.GetPayInformation()</td>
+                        <td>@emp.Department</td>
+                        <td class="pay-summary">@emp.GetDetailedSummary()</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </section>
+
+    @* ── Payroll Processing Demo (Phase 2, preserved) ─────────────────────── *@
+    <section class="card">
+        <h2>Payroll Processing <span class="poly-tag">Polymorphism Demo</span></h2>
+        <p class="section-note">
+            Produced by <code>PayrollProcessor.ProcessPayroll(@Model.HoursThisPeriod hrs)</code>.
+            Each pay amount was computed by calling <code>CalculatePay()</code> through an
+            <code>IPayable</code> interface reference &mdash; the same call, three different results.
+            <strong>Phase 3:</strong> Each <code>PayrollResult</code> is now created via a
+            parameterized constructor (private-set properties enforce immutability).
+        </p>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Pay Structure</th>
+                    <th>Period Pay (@Model.HoursThisPeriod hrs)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var result in Model.PayrollResults)
+                {
+                    <tr>
+                        <td>@result.EmployeeId</td>
+                        <td>@result.EmployeeName</td>
+                        <td>
+                            <span class="badge badge-@result.EmployeeType.ToLower()">@result.EmployeeType</span>
+                        </td>
+                        <td class="pay-summary">@result.PaySummary</td>
+                        <td class="pay-amount">@result.PayAmount.ToString("C")</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr class="total-row">
+                    <td colspan="4"><strong>Total Gross Payroll This Period</strong></td>
+                    <td class="pay-amount"><strong>@Model.TotalPayroll.ToString("C")</strong></td>
+                </tr>
+            </tfoot>
+        </table>
+    </section>
+
+    @* ── Employee Directory (Phase 1, preserved) ──────────────────────────── *@
+    <section class="card">
+        <h2>Employee Directory</h2>
+        <p class="section-note">
+            Full employee roster &mdash; preserved from Phase 1, extended in Phase 2.
+            <strong>Phase 3:</strong> <code>GetEmployeeType()</code>, <code>GetPayInformation()</code>,
+            and <code>GetDetailedSummary()</code> are now abstract methods — the compiler
+            guarantees every employee type supplies a concrete implementation.
+        </p>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Job Title</th>
+                    <th>Department</th>
+                    <th>Pay Rate</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var employee in Model.Employees)
+                {
+                    <tr>
+                        <td>@employee.EmployeeId</td>
+                        <td>@employee.FirstName @employee.LastName</td>
+                        <td>
+                            <span class="badge badge-@employee.GetEmployeeType().ToLower()">@employee.GetEmployeeType()</span>
+                        </td>
+                        <td>@employee.JobTitle</td>
+                        <td>@employee.Department</td>
+                        <td>@employee.GetPayInformation()</td>
+                        <td>@employee.Email</td>
+                        <td>@employee.Phone</td>
+                        <td>@employee.EmployeeAddress.GetFullAddress()</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </section>
+
+</div>
+
+@* ── Phase 3 CSS additions ─────────────────────────────────────────────── *@
+<style>
+    .report-output {
+        background: #1e1e2e;
+        color: #cdd6f4;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 0.78rem;
+        line-height: 1.6;
+        padding: 1.25rem 1.5rem;
+        border-radius: 8px;
+        overflow-x: auto;
+        white-space: pre;
+        border: 1px solid #45475a;
+        margin-top: 0.75rem;
+    }
+</style>

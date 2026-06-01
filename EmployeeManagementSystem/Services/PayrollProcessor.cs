@@ -1,19 +1,18 @@
 /*
- * Name: Sherika Fayson
- * Date: May 24, 2026
- * Purpose: Provides payroll processing for all IPayable employees.
- *          PayrollProcessor demonstrates two key OO concepts:
+ * Name:    Sherika Fayson
+ * Date:    May 31, 2026 (Phase 3 — updated from Phase 2)
+ * Purpose: Processes payroll for all IPayable employees.
+ *          Demonstrates COMPOSITION and POLYMORPHISM.
  *
- *          1. COMPOSITION — PayrollProcessor is composed of (contains) a list of
- *             IPayable objects. It does not inherit from Employee or any other
- *             class; it uses employee objects as components to do its work.
+ * PHASE 3 CHANGE — PayrollResult constructor:
+ *   Now uses the parameterized PayrollResult constructor (added in Phase 3)
+ *   rather than an object initializer. This aligns with the private-set access
+ *   specifiers on PayrollResult properties — construction is the only place
+ *   the values are set.
  *
- *          2. POLYMORPHISM — ProcessPayroll() and GetTotalPayroll() iterate over
- *             a List<IPayable>, calling CalculatePay() and GetPaySummary() on each
- *             element through the IPayable interface reference. The C# runtime
- *             dispatches to the correct implementation (HourlyEmployee,
- *             SalariedEmployee, or CommissionEmployee) at run time, without this
- *             class needing to know which concrete type it's working with.
+ * ACCESS SPECIFIERS:
+ *   - _employees: private readonly — the processor's data source is set at
+ *     construction and must not be replaced or mutated externally.
  */
 
 using EmployeeManagementSystem.Interfaces;
@@ -23,65 +22,54 @@ namespace EmployeeManagementSystem.Services
 {
     /// <summary>
     /// Processes payroll for a collection of IPayable employees.
-    /// Demonstrates COMPOSITION (holds IPayable list) and POLYMORPHISM
-    /// (calls interface methods that resolve to different implementations at runtime).
+    /// COMPOSITION: holds a private List&lt;IPayable&gt;.
+    /// POLYMORPHISM: calls CalculatePay() through IPayable references;
+    /// the CLR dispatches to the correct concrete implementation at runtime.
     /// </summary>
     public class PayrollProcessor
     {
-        // COMPOSITION: PayrollProcessor is composed of a list of IPayable objects.
-        // It does not know whether each element is Hourly, Salaried, or Commission
-        // — it only knows each one honors the IPayable contract.
+        // ACCESS SPECIFIER — private readonly:
+        // The employee list is set at construction. readonly prevents reassignment;
+        // private prevents external code from accessing or replacing the list.
+        // External code interacts only through the public ProcessPayroll / GetTotalPayroll methods.
         private readonly List<IPayable> _employees;
 
-        /// <summary>
-        /// Initializes the processor with a collection of payable employees.
-        /// </summary>
-        /// <param name="employees">Any objects that implement IPayable</param>
+        // CONSTRUCTOR — parameterized:
+        // Accepts any collection of IPayable objects; the processor does not
+        // care whether they are Hourly, Salaried, or Commission — only that
+        // they honor the IPayable contract.
         public PayrollProcessor(List<IPayable> employees)
         {
             _employees = employees;
         }
 
         /// <summary>
-        /// Processes payroll for all employees and returns a result per employee.
-        ///
-        /// POLYMORPHISM DEMONSTRATED HERE:
-        /// The foreach loop calls payable.CalculatePay() and payable.GetPaySummary()
-        /// through the IPayable interface reference. At runtime, the CLR dispatches
-        /// to whichever concrete implementation matches the actual object type:
-        ///   - HourlyEmployee.CalculatePay()     → hoursWorked × hourlyRate
-        ///   - SalariedEmployee.CalculatePay()   → annualSalary ÷ 26
-        ///   - CommissionEmployee.CalculatePay() → salesAmount × commissionRate
-        /// The processor does not contain a single if/switch on employee type.
+        /// Processes payroll for all employees.
+        /// POLYMORPHISM: CalculatePay() and GetPaySummary() are called through
+        /// IPayable references — the CLR dispatches to each concrete type's
+        /// implementation without a single if/switch on employee type.
         /// </summary>
-        /// <param name="hoursWorked">Hours worked this pay period (default 80 = 2 weeks)</param>
-        /// <returns>A list of PayrollResult objects, one per employee</returns>
         public List<PayrollResult> ProcessPayroll(decimal hoursWorked = 80m)
         {
             var results = new List<PayrollResult>();
 
-            // POLYMORPHISM: 'payable' is typed as IPayable, not any concrete class.
-            // Each method call on 'payable' resolves to the correct implementation
-            // based on the runtime type of the object stored in the list.
             foreach (IPayable payable in _employees)
             {
-                // POLYMORPHISM: CalculatePay dispatches to the correct subclass implementation
-                decimal amount = payable.CalculatePay(hoursWorked);
+                // POLYMORPHISM: each of these calls resolves to a different
+                // implementation depending on the runtime type stored in the list.
+                decimal amount  = payable.CalculatePay(hoursWorked);
+                string  summary = payable.GetPaySummary();
 
-                // POLYMORPHISM: GetPaySummary dispatches to the correct subclass implementation
-                string summary = payable.GetPaySummary();
-
-                // Retrieve display info — Employee is the base class; all three types inherit from it
                 if (payable is Employee emp)
                 {
-                    results.Add(new PayrollResult
-                    {
-                        EmployeeId   = emp.EmployeeId,
-                        EmployeeName = $"{emp.FirstName} {emp.LastName}",
-                        EmployeeType = emp.GetEmployeeType(),
-                        PaySummary   = summary,
-                        PayAmount    = amount
-                    });
+                    // PHASE 3: using the parameterized PayrollResult constructor
+                    // instead of an object initializer, consistent with private-set access.
+                    results.Add(new PayrollResult(
+                        emp.EmployeeId,
+                        $"{emp.FirstName} {emp.LastName}",
+                        emp.GetEmployeeType(),
+                        summary,
+                        amount));
                 }
             }
 
@@ -90,21 +78,13 @@ namespace EmployeeManagementSystem.Services
 
         /// <summary>
         /// Sums total payroll across all employees for the period.
-        ///
-        /// POLYMORPHISM: Same CalculatePay() call — each type handles it differently —
-        /// but the result is summed uniformly. This is the power of programming to
-        /// an interface: the caller doesn't care about the type, only the contract.
+        /// POLYMORPHISM: same CalculatePay() call — each type handles it differently.
         /// </summary>
-        /// <param name="hoursWorked">Hours worked this pay period</param>
-        /// <returns>Total gross payroll for all employees</returns>
         public decimal GetTotalPayroll(decimal hoursWorked = 80m)
         {
             decimal total = 0m;
-
-            // POLYMORPHISM: Each type's CalculatePay() is called through IPayable reference
             foreach (IPayable payable in _employees)
                 total += payable.CalculatePay(hoursWorked);
-
             return total;
         }
     }

@@ -1,6 +1,6 @@
 /*
  * Name: Sherika Fayson
- * Date: May 24, 2026
+ * Date: May 31, 2026 (Phase 3 — reviewed; no changes to interface contract required)
  * Purpose: Defines the IPayable interface for the Employee Management System.
  *          This interface establishes a contract that any payable entity must fulfill,
  *          enabling polymorphic payroll processing across different employee types.
