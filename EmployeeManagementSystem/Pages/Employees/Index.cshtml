@@ -1,0 +1,121 @@
+@page
+@model EmployeeManagementSystem.Pages.Employees.IndexModel
+
+<div class="app-container">
+
+    @* ── Page Header ────────────────────────────────────────────────────── *@
+    <header class="hero">
+        <p class="eyebrow">Week 4 Project Demo &mdash; Database Interactions</p>
+        <h1>Employee Database Management</h1>
+        <p class="hero-name">Sherika Fayson &nbsp;|&nbsp; SDC 320</p>
+    </header>
+
+    @* ── Status message (shown after add / update / delete) ─────────────── *@
+    @if (!string.IsNullOrEmpty(Model.StatusMessage))
+    {
+        <div class="status-banner">@Model.StatusMessage</div>
+    }
+
+    @* ── Instructions card ──────────────────────────────────────────────── *@
+    <section class="card">
+        <h2>Employee Database &mdash; Phase 4</h2>
+        <p>
+            This page demonstrates all four <strong>CRUD</strong> database operations
+            on a live <strong>SQLite</strong> database:
+        </p>
+        <ul class="instruction-list">
+            <li><strong>Create</strong> &mdash; Click <em>Add New Employee</em> to insert a new record.</li>
+            <li><strong>Read</strong> &mdash; All employees are loaded from the database and displayed below.
+                Use the search bar to filter by name, department, or job title.</li>
+            <li><strong>Update</strong> &mdash; Click <em>Edit</em> next to any employee to modify their record.</li>
+            <li><strong>Delete</strong> &mdash; Click <em>Delete</em> next to any employee to permanently remove them.</li>
+        </ul>
+        <div class="db-nav-row">
+            <a class="btn-primary" href="/Employees/Create">&#43; Add New Employee</a>
+            <a class="btn-secondary" href="/">&#8592; Back to Phase 4 Overview</a>
+        </div>
+    </section>
+
+    @* ── Search + Employee Table ─────────────────────────────────────────── *@
+    <section class="card">
+        <h2>Employee Records <span class="poly-tag">@Model.Employees.Count employee(s) found</span></h2>
+
+        @* Search form — GET so the search term appears in the URL *@
+        <form method="get" class="search-row">
+            <input type="text" name="SearchTerm" value="@Model.SearchTerm"
+                   placeholder="Search by name, department, or job title…" class="search-input" />
+            <button type="submit">Search</button>
+            @if (!string.IsNullOrWhiteSpace(Model.SearchTerm))
+            {
+                <a class="btn-secondary" href="/Employees">Clear</a>
+            }
+        </form>
+
+        @if (Model.Employees.Count == 0)
+        {
+            <p class="section-note" style="margin-top:1rem;">No employees match your search.</p>
+        }
+        else
+        {
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Job Title</th>
+                        <th>Department</th>
+                        <th>Pay Rate</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var emp in Model.Employees)
+                    {
+                        <tr>
+                            <td>@emp.EmployeeId</td>
+                            <td>@emp.FirstName @emp.LastName</td>
+                            <td>
+                                <span class="badge badge-@emp.GetEmployeeType().ToLower()">@emp.GetEmployeeType()</span>
+                            </td>
+                            <td>@emp.JobTitle</td>
+                            <td>@emp.Department</td>
+                            <td class="pay-summary">@emp.GetPayInformation()</td>
+                            <td>@emp.Email</td>
+                            <td>@emp.Phone</td>
+                            <td class="action-cell">
+                                <a class="btn-edit" href="/Employees/Edit?id=@emp.EmployeeId">Edit</a>
+                                <a class="btn-detail" href="/Employees/Details?id=@emp.EmployeeId">View</a>
+
+                                @* DELETE — inline form so the button sends a POST *@
+                                <form method="post" asp-page-handler="Delete"
+                                      style="display:inline;"
+                                      onsubmit="return confirm('Delete @emp.FirstName @emp.LastName? This cannot be undone.');">
+                                    <input type="hidden" name="id" value="@emp.EmployeeId" />
+                                    <button type="submit" class="btn-delete">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </section>
+
+</div>
+
+<style>
+.db-nav-row   { display: flex; gap: 12px; margin-top: 18px; flex-wrap: wrap; }
+.search-row   { display: flex; gap: 10px; margin-bottom: 16px; align-items: center; flex-wrap: wrap; }
+.search-input { flex: 1; min-width: 220px; padding: 10px 14px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; }
+.action-cell  { white-space: nowrap; }
+.status-banner { background: #d1fae5; border: 1px solid #6ee7b7; color: #065f46; border-radius: 10px; padding: 12px 20px; margin-bottom: 16px; font-size: 14px; font-weight: 500; }
+
+.btn-primary  { background: #1e3a8a; color: white; padding: 10px 18px; border-radius: 8px; text-decoration: none; font-size: 14px; font-weight: 600; display: inline-block; }
+.btn-secondary{ background: #e5e7eb; color: #1f2937; padding: 10px 18px; border-radius: 8px; text-decoration: none; font-size: 14px; display: inline-block; }
+.btn-edit     { background: #1d4ed8; color: white; padding: 5px 12px; border-radius: 6px; text-decoration: none; font-size: 12px; margin-right: 4px; display: inline-block; }
+.btn-detail   { background: #6b7280; color: white; padding: 5px 12px; border-radius: 6px; text-decoration: none; font-size: 12px; margin-right: 4px; display: inline-block; }
+.btn-delete   { background: #dc2626; color: white; padding: 5px 12px; border-radius: 6px; border: none; font-size: 12px; cursor: pointer; }
+</style>

@@ -5,47 +5,95 @@
 
     @* ── Hero Header ──────────────────────────────────────────────────── *@
     <header class="hero">
-        <p class="eyebrow">Week 3 Project Demo &mdash; Abstraction, Constructors &amp; Access Specifiers</p>
+        <p class="eyebrow">Week 4 Project Demo &mdash; Database Interactions</p>
         <h1>Employee Management System</h1>
         <p class="hero-name">Sherika Fayson &nbsp;|&nbsp; SDC 320</p>
     </header>
 
     @* ── Welcome / Instructions ───────────────────────────────────────── *@
     <section class="card">
-        <h2>Welcome &mdash; Phase 3</h2>
+        <h2>Welcome &mdash; Phase 4</h2>
         <p>
-            Welcome to the <strong>Employee Management System</strong> &mdash; Phase 3.
-            This phase extends the Phase 2 application to demonstrate three additional
-            object-oriented programming concepts in C#:
+            Welcome to the <strong>Employee Management System</strong> &mdash; Phase 4.
+            This phase extends the Phase 3 application to add <strong>SQLite database integration</strong>,
+            demonstrating persistent data storage and all four CRUD operations:
         </p>
         <ul class="instruction-list">
             <li>
-                <strong>Abstraction</strong> &mdash;
-                The <code>Employee</code> base class is now <em>abstract</em>, preventing direct
-                instantiation and requiring each subclass to implement <code>GetEmployeeType()</code>,
-                <code>GetPayInformation()</code>, and the new <code>GetDetailedSummary()</code>.
-                A second abstract class, <code>ReportGenerator</code>, demonstrates abstraction outside
-                the employee hierarchy — see the <em>Generated Reports</em> section below.
+                <strong>Create</strong> &mdash;
+                Click <em>Add New Employee</em> on the Employee Database page to insert a new record
+                into the SQLite database. The <code>EmployeeDatabase.AddEmployee()</code> method
+                generates a new ID and runs a parameterized <code>INSERT</code> statement.
             </li>
             <li>
-                <strong>Constructors</strong> &mdash;
-                Every model class now provides multiple constructors: <code>Address</code> has a
-                default, parameterized, and copy constructor; each employee type has a full
-                parameterized constructor and a simplified 4-parameter constructor (using
-                constructor chaining via <code>:this()</code>); <code>PayrollResult</code> has a
-                static constructor (sets <code>TaxYear</code>) and a parameterized constructor.
-                See the <em>New Hire Intake Queue</em> section for a live demo of simplified constructors.
+                <strong>Read</strong> &mdash;
+                The <em>Employee Directory</em> section below and the <em>/Employees</em> page both
+                load data from SQLite using <code>SELECT</code>. A search bar on the /Employees page
+                supports filtering by name, department, or job title.
             </li>
             <li>
-                <strong>Access Specifiers</strong> &mdash;
-                All model properties have been reviewed: identity fields use <code>private set</code>
-                (cannot change after construction), mutable role/contact fields use
-                <code>protected set</code> (only the class hierarchy may update them),
-                and internal data sources use <code>private readonly</code>.
-                No data is exposed more broadly than necessary.
+                <strong>Update</strong> &mdash;
+                Click <em>Edit</em> next to any employee to open a pre-populated form.
+                Submitting the form runs a parameterized <code>UPDATE</code> statement that
+                overwrites all editable columns for that employee ID.
+            </li>
+            <li>
+                <strong>Delete</strong> &mdash;
+                Click <em>Delete</em> next to any employee (with a confirmation prompt) to
+                permanently remove their record via a <code>DELETE WHERE EmployeeId = ?</code> statement.
             </li>
         </ul>
-        <p>Scroll down to explore each concept demonstrated live in this application.</p>
+        <p>
+            The Phase 3 OOP concepts (abstraction, constructors, access specifiers, polymorphism)
+            are preserved below — the database layer itself demonstrates them at the data tier.
+            Scroll down to explore, or jump directly to database management:
+        </p>
+        <div class="db-nav-row">
+            <a class="btn-primary" href="/Employees">&#128197; Manage Employee Database (CRUD)</a>
+            <a class="btn-secondary" href="/Employees/Create">&#43; Add New Employee</a>
+        </div>
+    </section>
+
+    @* ── Phase 4: Live Database Snapshot ─────────────────────────────────── *@
+    <section class="card">
+        <h2>Phase 4 &mdash; Live SQLite Database <span class="poly-tag">@Model.DbEmployeeCount record(s)</span></h2>
+        <p class="section-note">
+            This table is populated by <code>EmployeeDatabase.GetAllEmployees()</code> —
+            a <code>SELECT * FROM Employees ORDER BY LastName</code> query against the live SQLite file.
+            Changes made on the <a href="/Employees">/Employees</a> page are immediately reflected here.
+        </p>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Job Title</th>
+                    <th>Department</th>
+                    <th>Pay Rate</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var employee in Model.Employees)
+                {
+                    <tr>
+                        <td>@employee.EmployeeId</td>
+                        <td>@employee.FirstName @employee.LastName</td>
+                        <td>
+                            <span class="badge badge-@employee.GetEmployeeType().ToLower()">@employee.GetEmployeeType()</span>
+                        </td>
+                        <td>@employee.JobTitle</td>
+                        <td>@employee.Department</td>
+                        <td class="pay-summary">@employee.GetPayInformation()</td>
+                        <td>@employee.Email</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div style="margin-top:14px;">
+            <a class="btn-primary" href="/Employees">Manage Employees (Add / Edit / Delete)</a>
+        </div>
     </section>
 
     @* ── Phase 3 — Abstract Classes Summary ──────────────────────────────── *@
@@ -197,49 +245,7 @@
         </table>
     </section>
 
-    @* ── Employee Directory (Phase 1, preserved) ──────────────────────────── *@
-    <section class="card">
-        <h2>Employee Directory</h2>
-        <p class="section-note">
-            Full employee roster &mdash; preserved from Phase 1, extended in Phase 2.
-            <strong>Phase 3:</strong> <code>GetEmployeeType()</code>, <code>GetPayInformation()</code>,
-            and <code>GetDetailedSummary()</code> are now abstract methods — the compiler
-            guarantees every employee type supplies a concrete implementation.
-        </p>
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Job Title</th>
-                    <th>Department</th>
-                    <th>Pay Rate</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Address</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var employee in Model.Employees)
-                {
-                    <tr>
-                        <td>@employee.EmployeeId</td>
-                        <td>@employee.FirstName @employee.LastName</td>
-                        <td>
-                            <span class="badge badge-@employee.GetEmployeeType().ToLower()">@employee.GetEmployeeType()</span>
-                        </td>
-                        <td>@employee.JobTitle</td>
-                        <td>@employee.Department</td>
-                        <td>@employee.GetPayInformation()</td>
-                        <td>@employee.Email</td>
-                        <td>@employee.Phone</td>
-                        <td>@employee.EmployeeAddress.GetFullAddress()</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </section>
+    @* ── Phase 3 OOP concepts are demonstrated above; the database section was moved to the top. *@
 
 </div>
 

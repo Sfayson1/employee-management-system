@@ -1,0 +1,164 @@
+@page
+@model EmployeeManagementSystem.Pages.Employees.CreateModel
+
+<div class="app-container">
+
+    <header class="hero">
+        <p class="eyebrow">Week 4 Project Demo &mdash; Database Interactions</p>
+        <h1>Add New Employee</h1>
+        <p class="hero-name">Sherika Fayson &nbsp;|&nbsp; SDC 320</p>
+    </header>
+
+    <section class="card">
+        <h2>CREATE &mdash; Insert New Employee Record</h2>
+        <p class="section-note">
+            Fill in the fields below and click <strong>Save Employee</strong> to insert a new row
+            into the SQLite database. Required fields are marked with *.
+        </p>
+
+        <form method="post">
+            @Html.AntiForgeryToken()
+
+            @* Show validation errors if the form was submitted with missing required fields *@
+            <div asp-validation-summary="All" class="validation-summary"></div>
+
+            @* ── Employee Type selector (drives which pay field is shown) ──── *@
+            <div class="form-section">
+                <h3 class="form-section-title">Employee Type *</h3>
+                <div class="radio-group">
+                    <label><input type="radio" name="Input.EmployeeType" value="Hourly"
+                                  checked onchange="showPayField(this.value)" /> Hourly</label>
+                    <label><input type="radio" name="Input.EmployeeType" value="Salaried"
+                                  onchange="showPayField(this.value)" /> Salaried</label>
+                    <label><input type="radio" name="Input.EmployeeType" value="Commission"
+                                  onchange="showPayField(this.value)" /> Commission</label>
+                </div>
+            </div>
+
+            @* ── Name ──────────────────────────────────────────────────────── *@
+            <div class="form-section">
+                <h3 class="form-section-title">Name</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>First Name *</label>
+                        <input asp-for="Input.FirstName" class="form-control" />
+                        <span asp-validation-for="Input.FirstName" class="field-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name *</label>
+                        <input asp-for="Input.LastName" class="form-control" />
+                        <span asp-validation-for="Input.LastName" class="field-error"></span>
+                    </div>
+                </div>
+            </div>
+
+            @* ── Role ──────────────────────────────────────────────────────── *@
+            <div class="form-section">
+                <h3 class="form-section-title">Role</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Department *</label>
+                        <input asp-for="Input.Department" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>Job Title *</label>
+                        <input asp-for="Input.JobTitle" class="form-control" />
+                    </div>
+                </div>
+            </div>
+
+            @* ── Pay fields (shown based on selected type) ─────────────────── *@
+            <div class="form-section">
+                <h3 class="form-section-title">Compensation</h3>
+
+                <div id="field-hourly" class="form-group">
+                    <label>Hourly Rate ($)</label>
+                    <input asp-for="Input.HourlyRate" type="number" step="any" min="0" class="form-control" />
+                </div>
+                <div id="field-salaried" class="form-group" style="display:none;">
+                    <label>Annual Salary ($)</label>
+                    <input asp-for="Input.AnnualSalary" type="number" step="any" min="0" class="form-control" />
+                </div>
+                <div id="field-commission" style="display:none;">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Commission Rate (%)</label>
+                            <input asp-for="Input.CommissionRate" type="number" step="any" min="0" max="100" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label>Current Sales Amount ($)</label>
+                            <input asp-for="Input.SalesAmount" type="number" step="any" min="0" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @* ── Contact ───────────────────────────────────────────────────── *@
+            <div class="form-section">
+                <h3 class="form-section-title">Contact</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input asp-for="Input.Email" type="email" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input asp-for="Input.Phone" class="form-control" />
+                    </div>
+                </div>
+            </div>
+
+            @* ── Address ───────────────────────────────────────────────────── *@
+            <div class="form-section">
+                <h3 class="form-section-title">Address</h3>
+                <div class="form-group">
+                    <label>Street</label>
+                    <input asp-for="Input.Street" class="form-control" />
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>City</label>
+                        <input asp-for="Input.City" class="form-control" />
+                    </div>
+                    <div class="form-group" style="flex:0 0 100px;">
+                        <label>State</label>
+                        <input asp-for="Input.State" class="form-control" maxlength="2" />
+                    </div>
+                    <div class="form-group" style="flex:0 0 130px;">
+                        <label>Zip Code</label>
+                        <input asp-for="Input.ZipCode" class="form-control" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="db-nav-row" style="margin-top:24px;">
+                <button type="submit">Save Employee</button>
+                <a class="btn-secondary" href="/Employees">Cancel</a>
+            </div>
+        </form>
+    </section>
+
+</div>
+
+<script>
+    function showPayField(type) {
+        document.getElementById('field-hourly').style.display     = (type === 'Hourly')     ? '' : 'none';
+        document.getElementById('field-salaried').style.display   = (type === 'Salaried')   ? '' : 'none';
+        document.getElementById('field-commission').style.display = (type === 'Commission') ? '' : 'none';
+    }
+</script>
+
+<style>
+.form-section        { margin-bottom: 24px; }
+.form-section-title  { color: #1e3a8a; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 12px 0; padding-bottom: 6px; border-bottom: 1px solid #e5e7eb; }
+.form-row            { display: flex; gap: 16px; flex-wrap: wrap; }
+.form-group          { display: flex; flex-direction: column; flex: 1; min-width: 180px; margin-bottom: 14px; }
+.form-group label    { font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 5px; }
+.form-control        { padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; width: 100%; box-sizing: border-box; }
+.form-control:focus  { outline: none; border-color: #1d4ed8; box-shadow: 0 0 0 2px #bfdbfe; }
+.field-error         { color: #dc2626; font-size: 12px; margin-top: 3px; }
+.radio-group         { display: flex; gap: 24px; }
+.radio-group label   { font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+.db-nav-row          { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn-secondary       { background: #e5e7eb; color: #1f2937; padding: 10px 18px; border-radius: 8px; text-decoration: none; font-size: 14px; display: inline-block; line-height: 1.5; }
+</style>

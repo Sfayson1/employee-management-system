@@ -1,21 +1,30 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <title>Employee Management System</title>
-
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 
 <body>
 
+    <nav class="top-nav">
+        <div class="nav-inner">
+            <span class="nav-brand">EMS &mdash; Phase 4</span>
+            <div class="nav-links">
+                <a href="/">Overview</a>
+                <a href="/Employees">Employee Database</a>
+                <a href="/Employees/Create" class="nav-cta">+ Add Employee</a>
+            </div>
+        </div>
+    </nav>
+
     @RenderBody()
 
     <footer class="app-footer">
-        <p>&copy; 2026 - Employee Management System</p>
+        <p>&copy; 2026 &mdash; Employee Management System &mdash; Sherika Fayson | SDC 320</p>
     </footer>
 
 </body>

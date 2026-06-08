@@ -1,0 +1,63 @@
+@page
+@model EmployeeManagementSystem.Pages.Employees.DetailsModel
+
+<div class="app-container">
+
+    <header class="hero">
+        <p class="eyebrow">Week 4 Project Demo &mdash; Database Interactions</p>
+        <h1>Employee Details</h1>
+        <p class="hero-name">Sherika Fayson &nbsp;|&nbsp; SDC 320</p>
+    </header>
+
+    @if (!string.IsNullOrEmpty(Model.StatusMessage))
+    {
+        <div class="status-banner">&#10003; @Model.StatusMessage</div>
+    }
+
+    @if (Model.Employee is not null)
+    {
+        var emp = Model.Employee;
+
+        <section class="card">
+            <h2>
+                READ &mdash; @emp.FirstName @emp.LastName
+                <span class="badge badge-@emp.GetEmployeeType().ToLower()">@emp.GetEmployeeType()</span>
+            </h2>
+            <p class="section-note">
+                Record retrieved from SQLite via a <code>SELECT … WHERE EmployeeId = @emp.EmployeeId</code> query.
+            </p>
+
+            <table class="detail-table">
+                <tr><th>Employee ID</th>  <td>@emp.EmployeeId</td></tr>
+                <tr><th>Full Name</th>    <td>@emp.FirstName @emp.LastName</td></tr>
+                <tr><th>Type</th>         <td><span class="badge badge-@emp.GetEmployeeType().ToLower()">@emp.GetEmployeeType()</span></td></tr>
+                <tr><th>Job Title</th>    <td>@emp.JobTitle</td></tr>
+                <tr><th>Department</th>   <td>@emp.Department</td></tr>
+                <tr><th>Pay Rate</th>     <td class="pay-amount">@emp.GetPayInformation()</td></tr>
+                <tr><th>Email</th>        <td>@emp.Email</td></tr>
+                <tr><th>Phone</th>        <td>@emp.Phone</td></tr>
+                <tr><th>Address</th>      <td>@emp.EmployeeAddress.GetFullAddress()</td></tr>
+                <tr>
+                    <th>Full Summary</th>
+                    <td class="pay-summary">@emp.GetDetailedSummary()</td>
+                </tr>
+            </table>
+
+            <div class="db-nav-row" style="margin-top:24px;">
+                <a class="btn-primary" href="/Employees/Edit?id=@emp.EmployeeId">Edit This Employee</a>
+                <a class="btn-secondary" href="/Employees">Back to Employee List</a>
+            </div>
+        </section>
+    }
+
+</div>
+
+<style>
+.detail-table          { width: 100%; border-collapse: collapse; margin-top: 16px; }
+.detail-table th       { width: 160px; background: #eff6ff; color: #1e3a8a; text-align: left; padding: 13px 16px; border-bottom: 1px solid #e5e7eb; font-size: 13px; vertical-align: top; }
+.detail-table td       { padding: 13px 16px; border-bottom: 1px solid #e5e7eb; font-size: 14px; vertical-align: top; }
+.detail-table tr:last-child td, .detail-table tr:last-child th { border-bottom: none; }
+.db-nav-row            { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn-primary           { background: #1e3a8a; color: white; padding: 10px 18px; border-radius: 8px; text-decoration: none; font-size: 14px; font-weight: 600; display: inline-block; }
+.btn-secondary         { background: #e5e7eb; color: #1f2937; padding: 10px 18px; border-radius: 8px; text-decoration: none; font-size: 14px; display: inline-block; }
+</style>
