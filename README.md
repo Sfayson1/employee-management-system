@@ -75,8 +75,20 @@ and stores all employee data in a SQLite database with full CRUD functionality.
   directory on first launch and seeded with six sample employees.
 - No environment variables are required to run the application locally.
 
+## Project Demo Video
+
+[Watch the Project Demo on YouTube](https://youtu.be/REPLACE_WITH_YOUR_VIDEO_ID)
+
+The video (~5 minutes) covers:
+
+- Application overview and navigation
+- Live CRUD operations (Create, Read, Update, Delete) on the SQLite database
+- Payroll processing and polymorphism demo
+- Abstract class / report generation demo
+- OOP concepts walkthrough (inheritance, interfaces, abstraction, constructors)
+
 ## Link to Project
-[Fayson Employee Management System Repository](https://github.com/sfayson71/Fayson_EmployeeManagementSystem)
+[Fayson Employee Management System Repository](https://github.com/Sfayson1/employee-management-system)
 
 ## License
 This project is licensed under the GNU License - see the
