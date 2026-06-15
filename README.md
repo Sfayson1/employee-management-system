@@ -1,7 +1,7 @@
 # Project Name: Fayson Employee Management System
 
 ## Project Description
-The Fayson Employee Management System is a web application built with ASP.NET Core Razor Pages
+The Employee Management System is a web application built with ASP.NET Core Razor Pages
 that allows users to manage employee records across three pay types: Hourly, Salaried, and
 Commission-based. The application demonstrates core object-oriented programming concepts in C#
 including interfaces, polymorphism, inheritance, abstraction, constructors, and access specifiers,
