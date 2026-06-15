@@ -1,6 +1,7 @@
 # Project Name: Fayson Employee Management System
 
 ## Project Description
+
 The Employee Management System is a web application built with ASP.NET Core Razor Pages
 that allows users to manage employee records across three pay types: Hourly, Salaried, and
 Commission-based. The application demonstrates core object-oriented programming concepts in C#
@@ -8,6 +9,7 @@ including interfaces, polymorphism, inheritance, abstraction, constructors, and 
 and stores all employee data in a SQLite database with full CRUD functionality.
 
 ## Project Tasks
+
 - **Task 1: Set up the development environment**
   - Install .NET SDK and configure the ASP.NET Core Razor Pages project
   - Configure Git and GitHub repository
@@ -41,6 +43,7 @@ and stores all employee data in a SQLite database with full CRUD functionality.
   - Create this README file
 
 ## Project Skills Learned
+
 - Object-oriented programming in C# (interfaces, inheritance, polymorphism, abstraction)
 - Constructors: parameterized, simplified, copy, static, and constructor chaining
 - Access specifiers: public, private, protected, private readonly
@@ -52,32 +55,39 @@ and stores all employee data in a SQLite database with full CRUD functionality.
 - Version control with Git and GitHub
 
 ## Language Used
+
 - **C#**: Primary programming language for all application logic
 - **ASP.NET Core Razor Pages**: Web framework for the UI and page models
 - **HTML/CSS**: For page layout and styling
 - **SQL (SQLite)**: For persistent employee data storage
 
 ## Development Process Used
+
 - **Phased / Iterative Development**: Each weekly phase builds directly on the previous,
   adding one new set of OOP concepts while preserving all prior functionality.
 
 ## Notes
+
 - Ensure the .NET 10 SDK is installed before running the application.
 - Dependencies are restored automatically; or run manually:
-  ```
+
+  ```bash
   dotnet restore
   ```
+
 - Use the following command to run the server locally:
-  ```
+
+  ```bash
   dotnet run
   ```
+
 - The SQLite database file (`employees.db`) is created automatically in the project
   directory on first launch and seeded with six sample employees.
 - No environment variables are required to run the application locally.
 
 ## Project Demo Video
 
-[Watch the Project Demo on YouTube](https://youtu.be/REPLACE_WITH_YOUR_VIDEO_ID)
+[Watch the Project Demo on YouTube](https://youtu.be/frsJtQcH08g)
 
 The video (~5 minutes) covers:
 
@@ -88,8 +98,10 @@ The video (~5 minutes) covers:
 - OOP concepts walkthrough (inheritance, interfaces, abstraction, constructors)
 
 ## Link to Project
+
 [Fayson Employee Management System Repository](https://github.com/Sfayson1/employee-management-system)
 
 ## License
+
 This project is licensed under the GNU License - see the
 [LICENSE](LICENSE) file for details.
